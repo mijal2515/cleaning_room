@@ -1,0 +1,6 @@
+node_modules/
+tools/ai-eval/out/
+supabase/.temp/
+supabase/.branches/
+.env
+.env.*
