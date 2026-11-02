@@ -21,3 +21,7 @@ final hotspotsProvider = FutureProvider<List<Hotspot>>(
 final profileProvider = FutureProvider<Profile>(
   (ref) => ref.watch(roomRepositoryProvider).profile(),
 );
+
+final shopItemsProvider = FutureProvider<List<ShopItem>>(
+  (ref) => ref.watch(roomRepositoryProvider).shopItems(),
+);

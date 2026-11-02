@@ -117,6 +117,23 @@ class Reward {
       );
 }
 
+/// 가구 상점의 아이템 하나. owned면 이미 가진 것.
+class ShopItem {
+  const ShopItem({
+    required this.id,
+    required this.slot,
+    required this.price,
+    required this.name,
+    required this.owned,
+  });
+
+  final String id;
+  final String slot;
+  final int price;
+  final String name;
+  final bool owned;
+}
+
 class Profile {
   const Profile({required this.coins, required this.streakDays, required this.characterStage});
 

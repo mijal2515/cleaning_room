@@ -41,6 +41,26 @@ class RoomRepository {
     return [for (final r in rows) Hotspot.fromRow(r)];
   }
 
+  /// 상점 아이템 전체와, 그중 내가 가진 것 표시.
+  Future<List<ShopItem>> shopItems() async {
+    final items = await _client.from('items').select('id, slot, price, name').eq('active', true).order('price');
+    final owned = await _client.from('inventory').select('item_id');
+    final ownedIds = {for (final r in owned) r['item_id'] as String};
+    return [
+      for (final r in items)
+        ShopItem(
+          id: r['id'] as String,
+          slot: r['slot'] as String,
+          price: (r['price'] as num).toInt(),
+          name: r['name'] as String,
+          owned: ownedIds.contains(r['id']),
+        ),
+    ];
+  }
+
+  /// 코인으로 아이템을 산다. 가격·코인·중복은 서버(buy_item)가 검증한다.
+  Future<void> buyItem(String id) => _client.rpc('buy_item', params: {'p_item_id': id});
+
   Future<Profile> profile() async {
     final row = await _client.from('profiles').select('coins, streak_days, character_stage').single();
     return Profile.fromRow(row);
