@@ -8,10 +8,9 @@ final roomRepositoryProvider = Provider<RoomRepository>(
   (ref) => RoomRepository(Supabase.instance.client),
 );
 
-/// 앱 시작: 익명 로그인 후 방 프로필이 있는지 확인한다. true면 바로 오늘 화면으로 간다.
+/// 로그인 후 방 프로필이 있는지 확인한다. true면 바로 오늘 화면으로 간다.
 final bootstrapProvider = FutureProvider<bool>((ref) async {
   final repo = ref.watch(roomRepositoryProvider);
-  await repo.ensureSignedIn();
   return (await repo.hotspots()).isNotEmpty;
 });
 

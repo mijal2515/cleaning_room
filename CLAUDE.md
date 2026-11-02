@@ -30,15 +30,21 @@
   출시 관문은 "바로 따라 할 만함" 80% 이상.
 - 처음 배포 순서는 `README.md`에 있다.
 
-## 지금 상태 (2026-10-28)
+## 지금 상태 (2026-11-02)
 
-1~2주차 기초 완료: DB와 보상 규칙, 두 Edge Function, 품질 테스트 도구, 앱 뼈대(익명 로그인 → 방 등록 → 오늘 할 일 3개 → 완료하면 코인).
-`내 방`, `나` 화면은 자리만 있다.
+1~2주차 기초 완료: DB와 보상 규칙, 두 Edge Function, 품질 테스트 도구, 앱 뼈대(이메일·비밀번호 로그인 → 방 등록 → 오늘 할 일 3개 → 완료하면 코인).
+`내 방`, `나` 화면은 자리만 있다. (`나` 화면에 로그아웃 추가됨)
+
+로그인: 재원 요청으로 익명 로그인 대신 이메일·비밀번호 로그인을 쓴다(게스트 없음).
+앱 켜면 `/login`이 뜨고, 세션이 있으면 바로 앱으로 간다(`features/auth/login_screen.dart`, `core/router.dart`의 redirect).
+
+Supabase 프로젝트(ref `zqwhxnlajkvslksxgxru`)에 스키마·seed 배포 완료. 웹(Chrome)에서 로그인→앱 진입 확인됨.
+개발 편의로 Auth의 Confirm email은 꺼 둠(출시 전 다시 켤 것).
 
 아직 확인하지 못한 것:
 - 실제 Claude API 호출 (API 키가 없었음)
-- Android 기기·에뮬레이터에서 실행 (Android SDK가 없는 환경에서 만듦)
-- 실제 Supabase 프로젝트에 배포
+- Android 기기·에뮬레이터에서 실행 (웹으로만 확인함)
+- Edge Function(`analyze-room`, `complete-session`) 배포와 `ANTHROPIC_API_KEY` 시크릿 설정 — 방 등록 사진 분석이 여기서 막힌다
 
 다음 할 일 (설계 문서 일정 기준):
 1. Supabase 프로젝트 만들고 배포, 앱을 기기에서 실행해 보기

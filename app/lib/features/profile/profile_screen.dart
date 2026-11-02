@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../data/providers.dart';
 
@@ -25,10 +26,11 @@ class ProfileScreen extends ConsumerWidget {
             subtitle: const Text('방이 많이 달라졌을 때만 찍으면 돼요'),
             onTap: () => context.push('/scan/weekly'),
           ),
-          const ListTile(
-            leading: Icon(Icons.account_circle_outlined),
-            title: Text('게스트로 쓰는 중'),
-            subtitle: Text('휴대폰을 바꿔도 이어 쓰려면 Google 계정을 연결하세요 (준비 중)'),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('로그아웃'),
+            subtitle: Text(Supabase.instance.client.auth.currentUser?.email ?? ''),
+            onTap: () => ref.read(roomRepositoryProvider).signOut(),
           ),
         ],
       ),

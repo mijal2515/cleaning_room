@@ -22,12 +22,15 @@ class RoomRepository {
 
   final SupabaseClient _client;
 
-  /// 가입 절차 없이 바로 시작하도록 익명 로그인한다. Google 계정 연결은 나중에.
-  Future<void> ensureSignedIn() async {
-    if (_client.auth.currentSession == null) {
-      await _client.auth.signInAnonymously();
-    }
+  Future<void> signIn(String email, String password) async {
+    await _client.auth.signInWithPassword(email: email, password: password);
   }
+
+  Future<void> signUp(String email, String password) async {
+    await _client.auth.signUp(email: email, password: password);
+  }
+
+  Future<void> signOut() => _client.auth.signOut();
 
   Future<List<Hotspot>> hotspots() async {
     final rows = await _client
