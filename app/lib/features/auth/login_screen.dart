@@ -63,7 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             children: [
-              Text('청소 코치', style: Theme.of(context).textTheme.headlineMedium),
+              Text('방긋', style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 24),
               TextField(
                 controller: _email,

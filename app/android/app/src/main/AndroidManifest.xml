@@ -2,7 +2,7 @@
     <!-- Supabase와 통신. 디버그 빌드에는 자동으로 들어가지만 출시 빌드에는 직접 적어야 한다. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="청소 코치"
+        android:label="방긋"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

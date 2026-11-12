@@ -1,11 +1,12 @@
-# 청소 코치 (cleaning_room)
+# 방긋 (cleaning_room)
 
-원룸 1인 가구를 위한 AI 청소 코치 Android 앱. 사용자(재원)와는 한국어로 대화한다.
+원룸 1인 가구를 위한 AI 청소 코치 Android 앱 "방긋"(영문 Banggeut, 2026-11-12 확정). 사용자(재원)와는 한국어로 대화한다.
 설계 문서: https://claude.ai/artifact/BqVfuy6RwJ7AYGFyavxfkH (기능 범위, 아키텍처, 비용, 12주 일정)
 
 ## 정해진 것 (바꾸기 전에 재원에게 물어볼 것)
 
 - Flutter(Android 먼저) + Supabase. Firebase는 쓰지 않는다.
+- 앱 이름은 "방긋". Android applicationId는 아직 `com.cleaningcoach.cleaning_coach`이고, Play 등록 전에 바꿀지 재원에게 확인 중이다(Play에 한 번 올리면 못 바꾼다).
 - 사진은 처음 방 등록 때만 필수. AI가 방 프로필(`room_hotspots`: 구역별 할 일 목록)을 만들고,
   매일의 할 일 3개(합계 5~10분)는 앱이 사진과 AI 없이 프로필에서 고른다(`app/lib/features/today/today_tasks.dart`).
   주간 점검, "오늘 너무 지저분해", 애프터 사진은 선택이다. 사진은 서버에 저장하지 않는다.
