@@ -1,4 +1,4 @@
-# 청소 코치 앱 (Flutter)
+# 방긋 앱 (Flutter)
 
 실행 방법은 저장소 맨 위의 [README](../README.md)를 보세요.
 

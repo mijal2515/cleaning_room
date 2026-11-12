@@ -1,5 +1,5 @@
 name: cleaning_coach
-description: "원룸 1인 가구를 위한 AI 청소 코치"
+description: "방긋: 원룸 1인 가구를 위한 AI 청소 코치"
 publish_to: 'none'
 version: 0.1.0+1
 

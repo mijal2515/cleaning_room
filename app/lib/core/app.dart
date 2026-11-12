@@ -10,7 +10,7 @@ class CleaningCoachApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
-      title: '청소 코치',
+      title: '방긋',
       theme: buildTheme(Brightness.light),
       darkTheme: buildTheme(Brightness.dark),
       routerConfig: ref.watch(routerProvider),
