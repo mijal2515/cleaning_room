@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../data/providers.dart';
+import '../home/sunny_friend.dart';
 
 /// 이메일·비밀번호 로그인/가입. 성공하면 라우터 redirect가 앱으로 보낸다.
 class LoginScreen extends ConsumerStatefulWidget {
@@ -58,19 +59,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 360),
+          constraints: const BoxConstraints(maxWidth: 440),
           child: ListView(
             shrinkWrap: true,
             padding: const EdgeInsets.all(24),
             children: [
-              Text('청소 코치', style: Theme.of(context).textTheme.headlineMedium),
-              const SizedBox(height: 24),
+              const Center(child: SunnyFriend(size: 132)),
+              const SizedBox(height: 28),
+              Text(
+                _signUp ? '처음 오셨나요?' : '다시 만나서 반가워요',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                '청소 코치',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                '작은 정리로, 나만의 쉼터를 가꿔요.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 32),
               TextField(
                 controller: _email,
                 enabled: !_busy,
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: const [AutofillHints.email],
-                decoration: const InputDecoration(labelText: '이메일'),
+                decoration: const InputDecoration(
+                  labelText: '이메일',
+                  prefixIcon: Icon(Icons.mail_outline_rounded),
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -79,17 +101,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 obscureText: true,
                 autofillHints: const [AutofillHints.password],
                 onSubmitted: (_) => _busy ? null : _submit(),
-                decoration: const InputDecoration(labelText: '비밀번호'),
+                decoration: const InputDecoration(
+                  labelText: '비밀번호',
+                  prefixIcon: Icon(Icons.lock_outline_rounded),
+                ),
               ),
               if (_error != null) ...[
                 const SizedBox(height: 12),
-                Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                Text(
+                  _error!,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
               ],
               const SizedBox(height: 24),
               FilledButton(
                 onPressed: _busy ? null : _submit,
                 child: _busy
-                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
                     : Text(_signUp ? '가입하기' : '로그인'),
               ),
               TextButton(
@@ -99,7 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         _error = null;
                         _signUp = !_signUp;
                       }),
-                child: Text(_signUp ? '이미 계정이 있어 (로그인)' : '계정이 없어 (가입)'),
+                child: Text(_signUp ? '이미 계정이 있어 (로그인)' : '회원가입'),
               ),
             ],
           ),

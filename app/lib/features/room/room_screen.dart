@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../data/models.dart';
 import '../../data/providers.dart';
 import '../home/character_bubble.dart';
+import '../home/gentle_heading.dart';
 
 /// 미니어처 방 꾸미기: 코인으로 가구를 산다. 배치·그림은 아이템 에셋이 준비되면 붙인다.
 class RoomScreen extends ConsumerWidget {
@@ -21,8 +22,8 @@ class RoomScreen extends ConsumerWidget {
       final msg = e.message.contains('not enough')
           ? '코인이 모자라'
           : e.message.contains('already owned')
-              ? '이미 가지고 있어'
-              : '잠깐 문제가 생겼어. 다시 해볼래?';
+          ? '이미 가지고 있어'
+          : '잠깐 문제가 생겼어. 다시 해볼래?';
       messenger.showSnackBar(SnackBar(content: Text(msg)));
     }
   }
@@ -34,36 +35,56 @@ class RoomScreen extends ConsumerWidget {
     final coins = profile?.coins ?? 0;
     return Scaffold(
       appBar: AppBar(title: const Text('내 방')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          CharacterBubble(
-            stage: profile?.characterStage ?? 1,
-            message: '코인을 모아서 우리 방을 꾸며 보자.',
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 680),
+          child: ListView(
+            padding: const EdgeInsets.all(24),
+            children: [
+              const GentleHeading(eyebrow: '내 방', title: '조금씩, 나다운 공간.'),
+              CharacterBubble(
+                stage: profile?.characterStage ?? 1,
+                message: '코인을 모아서 우리 방을 꾸며 보자.',
+              ),
+              const SizedBox(height: 8),
+              Text('가진 코인 $coins', textAlign: TextAlign.center),
+              const SizedBox(height: 16),
+              Text('가구 가게', style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 8),
+              switch (shop) {
+                AsyncData(:final value) => Column(
+                  children: [
+                    for (final item in value)
+                      _ShopTile(
+                        item: item,
+                        coins: coins,
+                        onBuy: () => _buy(context, ref, item),
+                      ),
+                  ],
+                ),
+                AsyncError() => const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('가게를 불러오지 못했어.', textAlign: TextAlign.center),
+                ),
+                _ => const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              },
+            ],
           ),
-          const SizedBox(height: 8),
-          Text('가진 코인 $coins', textAlign: TextAlign.center),
-          const SizedBox(height: 16),
-          Text('가구 가게', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 8),
-          switch (shop) {
-            AsyncData(:final value) => Column(
-                children: [for (final item in value) _ShopTile(item: item, coins: coins, onBuy: () => _buy(context, ref, item))],
-              ),
-            AsyncError() => const Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('가게를 불러오지 못했어.', textAlign: TextAlign.center),
-              ),
-            _ => const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator())),
-          },
-        ],
+        ),
       ),
     );
   }
 }
 
 class _ShopTile extends StatelessWidget {
-  const _ShopTile({required this.item, required this.coins, required this.onBuy});
+  const _ShopTile({
+    required this.item,
+    required this.coins,
+    required this.onBuy,
+  });
 
   final ShopItem item;
   final int coins;
@@ -72,15 +93,24 @@ class _ShopTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final affordable = coins >= item.price;
-    return ListTile(
-      title: Text(item.name),
-      subtitle: Text('${item.price} 코인'),
-      trailing: item.owned
-          ? const Chip(label: Text('보유'))
-          : SizedBox(
-              width: 96,
-              child: FilledButton(onPressed: affordable ? onBuy : null, child: const Text('사기')),
-            ),
+    return Card(
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: const Icon(Icons.chair_outlined),
+        ),
+        title: Text(item.name),
+        subtitle: Text('${item.price} 코인'),
+        trailing: item.owned
+            ? const Chip(label: Text('보유'))
+            : SizedBox(
+                width: 96,
+                child: FilledButton(
+                  onPressed: affordable ? onBuy : null,
+                  child: const Text('사기'),
+                ),
+              ),
+      ),
     );
   }
 }
